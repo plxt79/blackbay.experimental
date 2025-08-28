@@ -159,7 +159,7 @@
 
         .submit-btn {
             border-radius: 0 5px 5px 0;
-            
+
         }
 
         .info-text {
@@ -404,9 +404,9 @@
         // File Count
         async function getFileCount() {
             try {
-                // Simulating file count fetch
-                // In a real implementation, you would fetch from your API
-                document.getElementById("file-count").textContent = "1,247";
+                const res = await fetch('/api/filecount');
+                const data = await res.json();
+                document.getElementById("file-count").textContent = data.count;
             } catch {
                 document.getElementById("file-count").textContent = "Error";
             }
