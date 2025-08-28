@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blackbay</title>
+    <link rel="icon" href="/res/icon.png" type="icon/x-image">
+    <link rel="stylesheet" href="/res/styles/request.css">
+</head>
+
+<body>
+    <div id="toast">toast message</div>
+    <div class="cursor-follower"></div>
+    <div class="container">
+        <header>
+            <button id="backBtn" onclick="back()" title="https://blackbay.vercel.app/manifest">Back</button>
+            <h1>blackbay Game Requests</h1>
+        </header>
+        <div class="content">
+            <div class="tools">
+                <div class="circle">
+                    <span class="red box"></span>
+                </div>
+                <div class="circle">
+                    <span class="yellow box"></span>
+                </div>
+                <div class="circle">
+                    <span class="green box"></span>
+                </div>
+            </div>
+            <div class="stuff">
+                <div class="input-wrapper">
+                    <input id="AppIDInput" type="number" placeholder="AppID goes here" autocomplete="off">
+
+                    <div class="request-submit-wrapper">
+                        <div class="radio-vertical">
+                            <label class="label">
+                                <input type="radio" name="requestType" value="request" checked> Request
+                            </label>
+                            <label class="label">
+                                <input type="radio" name="requestType" value="update"> Update
+                            </label>
+                        </div>
+                        <button type="submit" id="submitRequest" onclick="request()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/res/scripts/request.js"></script>
+
+</html>

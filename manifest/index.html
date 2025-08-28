@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>blackbay</title>
+    <link rel="icon" href="/res/icon.png" type="icon/x-image">
+    <link rel="stylesheet" href="/res/styles/manifest.css">
+</head>
+
+<body>
+    <div id="toast">toast message</div>
+    <div class="cursor-follower"></div>
+    <div class="container">
+        <header>
+            <button id="homeBtn" onclick="home()" title="https://blackbay.vercel.app/">Home</button>
+            <h1>blackbay Manifest Generator</h1>
+            <button id="requestBtn" onclick="requestpage()" title="https://blackbay.vercel.app/manifest/request">Request
+                Games</button>
+        </header>
+        <div class="generator">
+            <div class="tools">
+                <div class="circle">
+                    <span class="red box"></span>
+                </div>
+                <div class="circle">
+                    <span class="yellow box"></span>
+                </div>
+                <div class="circle">
+                    <span class="green box"></span>
+                </div>
+            </div>
+            <div class="content">
+                <div class="input">
+                    <input id="AppIDInput" placeholder="AppID / Steam URL" autocomplete="off">
+                    <button type="submit" id="genAppID" onclick="generate()">Submit</button>
+                </div>
+                <p>Total Files: <span id="file-count">Loading...</span></p>
+                <p>Not affiliated with Valve or Steam</p>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/res/scripts/manifest.js"></script>
+
+</html>
