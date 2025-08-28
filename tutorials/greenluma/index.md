@@ -1,4 +1,4 @@
-Installation:
+# Installation:
 
 Normal mode:
 1. Backup the original bin\x64launcher.exe.

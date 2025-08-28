@@ -1,4 +1,9 @@
-After downloading the setup file, run it as an administrator. A command prompt should pop up, press ENTER on your keyboard to complete the installation. There will be a floating SteamTools Icon, if it's not there, something not right
+# Installation
+1. Download the setup from https://steamtools.net/download.html
+2. Run the setup as an administrator and install Steamtools
 
-Unlocking games:
-get lua & manifests files of the game you want to unlock, extract the zip (if you have one), select the lua and manifests (all of them) and drag them to the floating SteamTools icon. After that, right-click on the SteamTools icon and click "Restart Steam". Done!
+# Unlocking games:
+1. Download Luas from the manifest generator by pasting store URL in appid box
+2. Extract the downloaded zip
+3. Drag and drop all the files to the floating steamtools icon
+4. Right-click the icon and restart steam
