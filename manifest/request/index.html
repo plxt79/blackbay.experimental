@@ -195,6 +195,22 @@
             font-size: 0.9rem;
         }
 
+        .cursor-follower {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition:
+                transform 0.15s ease-out,
+                width 0.3s ease,
+                height 0.3s ease;
+            will-change: transform;
+        }
+
         /* Toast styles */
         #toast {
             position: fixed;
@@ -271,6 +287,7 @@
 
 <body>
     <div id="toast">toast message</div>
+    <div class="cursor-follower"></div>
     
     <div class="container">
         <header>
@@ -315,6 +332,52 @@
     </div>
 
     <script>
+        const follower = document.querySelector('.cursor-follower');
+        let mouseX = 0, mouseY = 0;
+        let posX = 0, posY = 0;
+        let rafId = null;
+
+        // Only enable cursor follower on non-touch devices
+        if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (!rafId) animateFollower();
+            });
+
+            function animateFollower() {
+                posX += (mouseX - posX) * 0.1;
+                posY += (mouseY - posY) * 0.1;
+
+                follower.style.left = posX + 'px';
+                follower.style.top = posY + 'px';
+
+                rafId = requestAnimationFrame(animateFollower);
+            }
+
+            document.addEventListener("mouseleave", () => {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            });
+
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    follower.style.transform = 'translate(-50%, -50%) scale(2)';
+                    follower.style.background = 'rgba(0, 0, 0, 0)';
+                    follower.style.border = '#0080ff 1px solid';
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    follower.style.transform = 'translate(-50%, -50%) scale(1)';
+                    follower.style.background = '#0080ff';
+                    follower.style.border = "none";
+                });
+            });
+        } else {
+            // Hide cursor follower on touch devices
+            follower.style.display = 'none';
+        }
+        
         // Toast system
         function showToast(message, backgroundColor = "#333", duration = 1500, textColor = "#fff") {
             const toast = document.getElementById("toast");
