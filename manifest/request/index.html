@@ -385,7 +385,7 @@
                 } else {
                     const successMsg = type === "request" ? "Game request sent!" : "Update request sent!";
                     showToast(successMsg, '#00ca4e', 1500, "#000");
-                    document.getElementById("submitRequest").style.borderColor = '#00ca4e';
+                    inputEl.style.borderColor = '#00ca4e';
                     setTimeout(() => inputEl.style.borderColor = "", 1500);
                     inputEl.value = "";
                 }
