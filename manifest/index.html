@@ -4,44 +4,442 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>blackbay</title>
+    <title>blackbay Manifest Generator</title>
     <link rel="icon" href="/res/icon.png" type="icon/x-image">
-    <link rel="stylesheet" href="/res/styles/manifest.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #435dd8;
+            --bg-color: #000000;
+            --sidebar-bg: #121212;
+            --content-bg: #20202040;
+            --border-color: #404040DD;
+            --text-color: #FFFFFF;
+            --link-color: #0085C5;
+            --hover-color: #435dd8;
+        }
+
+        * {
+            font-family: "Poppins", sans-serif;
+            color: #FFFFFF;
+            transition: all 0.3s ease;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            --color: rgba(114, 114, 114, 0.3);
+            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--border-color);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: rgba(67, 93, 216, 0.2);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: rgba(67, 93, 216, 0.3);
+        }
+
+        button:hover:not(#genAppID) {
+            transform: translateY(-2px);
+        }
+
+        .generator-container {
+            background-color: var(--content-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .terminal-header {
+            background-color: var(--sidebar-bg);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-button.red {
+            background-color: #ff605c;
+        }
+
+        .terminal-button.yellow {
+            background-color: #ffbd44;
+        }
+
+        .terminal-button.green {
+            background-color: #00ca4e;
+        }
+
+        .terminal-title {
+            margin-left: 15px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .terminal-body {
+            padding: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            background-color: rgba(64, 64, 64, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 5px 0 0 5px;
+            padding: 12px 15px;
+            color: white;
+            outline: none;
+            border-right: none;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            border-radius: 0 5px 5px 0;
+            
+        }
+
+        .info-text {
+            text-align: center;
+            color: #aaa;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .file-count {
+            text-align: center;
+            margin: 15px 0;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition:
+                transform 0.15s ease-out,
+                width 0.3s ease,
+                height 0.3s ease;
+            will-change: transform;
+        }
+
+        /* Toast styles */
+        #toast {
+            position: fixed;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #333;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #0005;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 9999;
+            text-align: center;
+            font-size: 0.9rem;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Mobile blocking */
+        .mobile-block {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-block {
+                display: flex;
+                color: #fff;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            body>*:not(.mobile-block) {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div id="toast">toast message</div>
     <div class="cursor-follower"></div>
+
+    <!-- Mobile blocking message -->
+    <div class="mobile-block">
+        <h2>⚠️ Access Denied</h2>
+        <p>This app is only available on desktop.</p>
+    </div>
+
     <div class="container">
         <header>
-            <button id="homeBtn" onclick="home()" title="https://blackbay.vercel.app/">Home</button>
-            <h1>blackbay Manifest Generator</h1>
-            <button id="requestBtn" onclick="requestpage()" title="https://blackbay.vercel.app/manifest/request">Request
-                Games</button>
-        </header>
-        <div class="generator">
-            <div class="tools">
-                <div class="circle">
-                    <span class="red box"></span>
-                </div>
-                <div class="circle">
-                    <span class="yellow box"></span>
-                </div>
-                <div class="circle">
-                    <span class="green box"></span>
-                </div>
+            <a href="/" class="logo">blackbay</a>
+            <div class="nav-buttons">
+                <button onclick="home()">Home</button>
+                <button onclick="requestpage()">Request Games</button>
             </div>
-            <div class="content">
-                <div class="input">
-                    <input id="AppIDInput" placeholder="AppID / Steam URL" autocomplete="off">
-                    <button type="submit" id="genAppID" onclick="generate()">Submit</button>
+        </header>
+
+        <div class="generator-container">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="terminal-button red"></div>
+                    <div class="terminal-button yellow"></div>
+                    <div class="terminal-button green"></div>
                 </div>
-                <p>Total Files: <span id="file-count">Loading...</span></p>
-                <p>Not affiliated with Valve or Steam</p>
+                <div class="terminal-title">Manifest Generator</div>
+            </div>
+
+            <div class="terminal-body">
+                <div class="input-group">
+                    <input id="AppIDInput" placeholder="AppID / Steam URL" autocomplete="off">
+                    <button class="submit-btn" id="genAppID" onclick="generate()">Submit</button>
+                </div>
+
+                <div class="file-count">Total Files: <span id="file-count">Loading...</span></div>
+
+                <p class="info-text">Not affiliated with Valve or Steam</p>
             </div>
         </div>
     </div>
+
+    <script>
+        const follower = document.querySelector('.cursor-follower');
+        let mouseX = 0, mouseY = 0;
+        let posX = 0, posY = 0;
+        let rafId = null;
+
+        // Only enable cursor follower on non-touch devices
+        if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (!rafId) animateFollower();
+            });
+
+            function animateFollower() {
+                posX += (mouseX - posX) * 0.1;
+                posY += (mouseY - posY) * 0.1;
+
+                follower.style.left = posX + 'px';
+                follower.style.top = posY + 'px';
+
+                rafId = requestAnimationFrame(animateFollower);
+            }
+
+            document.addEventListener("mouseleave", () => {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            });
+
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    follower.style.transform = 'translate(-50%, -50%) scale(2)';
+                    follower.style.background = 'rgba(0, 0, 0, 0)';
+                    follower.style.border = '#0080ff 1px solid';
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    follower.style.transform = 'translate(-50%, -50%) scale(1)';
+                    follower.style.background = '#0080ff';
+                    follower.style.border = "none";
+                });
+            });
+        } else {
+            // Hide cursor follower on touch devices
+            follower.style.display = 'none';
+        }
+
+        // Toast system
+        function showToast(message, backgroundColor = "#333", duration = 1500, textColor = "#fff") {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.backgroundColor = backgroundColor;
+            toast.style.color = textColor;
+
+            toast.classList.add("show");
+
+            setTimeout(() => toast.classList.remove("show"), duration);
+        }
+
+        // Generate AppID / Steam URL
+        async function generate() {
+            const inputEl = document.getElementById("AppIDInput");
+            const input = inputEl.value.trim();
+
+            const urlMatch = input.match(/^https?:\/\/store\.steampowered\.com\/app\/(\d+)/);
+            const isNumeric = /^\d+$/.test(input);
+            const AppID = urlMatch ? urlMatch[1] : (isNumeric ? input : null);
+
+            if (!AppID) {
+                showToast("Invalid input.", "#FF0000");
+                inputEl.style.borderColor = "#FF0000";
+                setTimeout(() => { inputEl.style.borderColor = ""; }, 1500);
+                return;
+            }
+
+            const btn = document.getElementById('genAppID');
+            btn.disabled = true;
+            btn.textContent = "Generating...";
+
+            try {
+                const WORKER_URL = 'https://cdn.farhad-0ed.workers.dev';
+                const response = await fetch(`${WORKER_URL}?appid=${encodeURIComponent(AppID)}&t=${Date.now() + 30000}`);
+
+                if (!response.ok) {
+                    if (response.status === 404) return showToast("AppID unavailable", "#FF0000");
+                    if (response.status === 403) return showToast("Download link expired", "#FF0000");
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                const contentType = response.headers.get('Content-Type');
+                if (!contentType || !contentType.includes('zip')) {
+                    return showToast("AppID unavailable", "#FF0000");
+                }
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = blobUrl;
+                link.download = `${AppID}.zip`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+
+                showToast(`Generated App: ${AppID}`, "#00ca4e");
+            } catch (err) {
+                showToast(err.message, "#FF0000");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Submit";
+            }
+        }
+
+        // Navigation
+        function home() { window.location.href = "/"; }
+        function requestpage() { window.location.href = "/manifest/request"; }
+
+        // File Count
+        async function getFileCount() {
+            try {
+                // Simulating file count fetch
+                // In a real implementation, you would fetch from your API
+                document.getElementById("file-count").textContent = "1,247";
+            } catch {
+                document.getElementById("file-count").textContent = "Error";
+            }
+        }
+        getFileCount();
+
+        // Enter key to submit
+        document.getElementById("AppIDInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter" && !document.getElementById('genAppID').disabled) {
+                generate();
+            }
+        });
+
+        // Disable dev tools + right-click
+        document.addEventListener('keydown', e => {
+            const key = e.key.toUpperCase();
+            if (key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(key))) {
+                e.preventDefault();
+                showToast("Action blocked", "#FF0000");
+            }
+        });
+
+        document.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            showToast("Right-click disabled", "#FF0000");
+        });
+
+        // Mobile check
+        if ((/android|iphone|ipad|iPod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) ||
+            (navigator.maxTouchPoints > 1 || Math.max(window.innerWidth, window.innerHeight) <= 800)) {
+            document.querySelector('.mobile-block').style.display = 'flex';
+        }
+    </script>
 </body>
-<script src="/res/scripts/manifest.js"></script>
 
 </html>
